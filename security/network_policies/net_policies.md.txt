@@ -1,0 +1,55 @@
+Note: In Kubernetes (K8s), network policies are used to control and secure the traffic between pods within a cluster. They define rules that govern how pods can communicate with each other based on various criteria such as source IP, destination IP, port numbers, and pod labels. Network policies allow you to enforce fine-grained access control and isolation within your Kubernetes cluster.  
+  
+Here are some key points to understand about network policies in K8s:
+
+Policy Types: There are two types of network policies in Kubernetes: Ingress and Egress.
+
+Ingress Policy: An ingress policy controls the incoming traffic to a pod. It specifies which pods are allowed to send traffic to a particular pod.
+
+Egress Policy: An egress policy controls the outgoing traffic from a pod. It defines the destinations (IP addresses, port ranges, etc.) that pods are allowed to communicate with.
+
+Rule Specification: Network policies use a set of rules to define the desired traffic behavior. Each rule typically includes the following elements:
+
+Pod Selector: This specifies the pods to which the rule applies based on labels.
+Namespace Selector: It determines the namespaces to which the rule applies.
+Traffic Allow/Deny: The rule specifies whether traffic is allowed or denied based on the specified criteria (e.g., source IP, destination IP, port numbers).
+Ports and Protocols: Rules can specify which ports and protocols are allowed or denied for communication.
+Default Behavior: By default, all pods in a Kubernetes cluster can freely communicate with each other. Network policies are applied selectively to restrict or allow specific traffic patterns. If no network policies are defined, all communication between pods is permitted.
+
+Enforcement: Network policies in Kubernetes are enforced by the network plugin or network provider used in the cluster. Examples of network plugins include Calico, Cilium, Flannel, and Weave. The chosen network plugin must support network policy enforcement.  
+
+Policy Inheritance: Network policies are namespace-scoped. This means that network policies are applied to pods within a particular namespace. If a pod doesn't have any network policies defined in its namespace, it inherits the default policy of allowing all traffic.  
+
+Policy Interactions: When multiple network policies are defined in a namespace, they can interact with each other. Kubernetes uses a "deny by default" approach, meaning that if a specific traffic flow is not explicitly allowed, it is denied. Policies can be combined to create complex rules and achieve granular control over pod communication.  
+
+It's important to note that network policies are a feature provided by the Kubernetes network plugin or provider being used in your cluster. The specific implementation and capabilities may vary depending on the plugin you choose.  
+
+
+Excercises:
+
+1. How many network policies do you see in the environment?  
+Run the command: `kubectl get networkpolicy` or `kubectl get netpol`  
+
+2. What type of traffic is this Network Policy configured to handle?  
+Run the command: `kubectl describe networkpolicy` and look under the Policy Types section.  
+
+
+
+3. Create a network policy to allow traffic from the Internal application only to the payroll-service and db-service.  
+Use the spec given below. You might want to enable ingress traffic to the pod to test your rules in the UI.  
+CheckCompleteIncomplete  
+Policy Name: internal-policy  
+Policy Type: Egress  
+Egress Allow: payroll  
+Payroll Port: 8080  
+Egress Allow: mysql  
+MySQL Port: 3306  
+
+Creater manifest file  
+Note: We have also allowed Egress traffic to TCP and UDP port. This has been added to ensure that the internal DNS resolution works from the internal pod.
+Remember: The kube-dns service is exposed on port 53:
+
+root@controlplane:~# kubectl get svc -n kube-system 
+NAME       TYPE        CLUSTER-IP   EXTERNAL-IP   PORT(S)                  AGE
+kube-dns   ClusterIP   10.96.0.10   <none>        53/UDP,53/TCP,9153/TCP   93m
+root@controlplane:~#
