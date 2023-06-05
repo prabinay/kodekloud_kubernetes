@@ -1,0 +1,17 @@
+1. What is the Networking Solution used by this cluster?
+Check the config file located at /etc/cni/net.d/
+
+2. How many weave agents/peers are deployed in this cluster?
+Run the command kubectl get pods -n kube-system and count weave pods
+
+3. On which nodes are the weave peers present?
+kubectl describe pod -o wide
+
+4. Identify the name of the bridge network/interface created by weave on each node.
+Run the command ip link
+
+5. What is the POD IP address range configured by weave?
+Run the command 'ip addr show weave'
+
+6. What is the default gateway configured on the PODs scheduled on node01?Try scheduling a pod on node01 and check ip route output
+-> SSH to the node01 by running the command: ssh node01 and then run the ip route command and look at the weave line.

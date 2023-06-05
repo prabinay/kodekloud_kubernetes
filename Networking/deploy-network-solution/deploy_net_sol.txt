@@ -1,0 +1,21 @@
+1. Inspect why the POD is not running.
+Run the command kubectl describe pod
+
+2. Deploy weave-net networking solution to the cluster.
+NOTE: - We already have provided a weave manifest file under the /root/weave directory.
+Deploy weave
+Wait for the app to run
+
+solution:
+Please check out the official weaveworks GitHub page for various weave releases, available at the top right panel.
+Run the below command to deploy the weave on the cluster: -
+
+kubectl apply -f /root/weave/weave-daemonset-k8s.yaml
+Now check if the weave pods are created and let's also check the status of our app pod now:
+
+root@controlplane:/# kubectl get pods -A | grep weave
+kube-system   weave-net-q7m6s                        2/2     Running   0          21s
+
+root@controlplane:/# kubectl get pods
+NAME   READY   STATUS    RESTARTS   AGE
+app    1/1     Running   0          

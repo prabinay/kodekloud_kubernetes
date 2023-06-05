@@ -1,0 +1,34 @@
+Note: CNI (Container Networking Interface) is a standard for configuring networking interfaces in Linux containers. Weave is one of the CNI plugins available that provides container networking capabilities.
+
+Weave CNI is designed to create a virtual network that connects containers across multiple hosts. It allows containers running on different hosts to communicate with each other seamlessly by creating a mesh network. This is achieved by creating a virtual network interface on each host and encapsulating container traffic within a VXLAN (Virtual Extensible LAN) overlay.
+
+When a container is created using Containerd and Weave CNI, the following steps typically occur:
+
+Container creation: Containerd creates a container based on the specified image and configuration.
+
+Networking setup: Containerd invokes the Weave CNI plugin to set up the container's network. This involves configuring the virtual network interface for the container and associating it with the Weave network.
+
+IP address assignment: Weave CNI assigns an IP address to the container from the specified IP range configured for the Weave network.
+
+Routing and encapsulation: Weave CNI configures routing rules and sets up encapsulation mechanisms (such as VXLAN) to ensure containers can communicate with each other across hosts.
+
+Network connectivity: Once the networking setup is complete, the container is ready to communicate with other containers within the Weave network, regardless of their physical host.
+
+Weave CNI provides a flexible and scalable solution for container networking, enabling seamless communication between containers across different hosts while abstracting away the underlying network infrastructure complexities.
+
+
+
+1. Inspect the kubelet service and identify the container runtime endpoint value is set for Kubernetes.
+Run the command: ps -aux | grep kubelet | grep --color container-runtime-endpoint and look at the configured --container-runtime-endpoint flag. 
+
+2. What is the path configured with all binaries of CNI supported plugins? 
+The CNI binaries are located under /opt/cni/bin by default.
+
+3. Identify which of the below plugins is not available in the list of available CNI plugins on this host? 
+Run the command: ls /opt/cni/bin and identify the one not present at that directory. 
+
+4. What is the CNI plugin configured to be used on this kubernetes cluster?
+Run the command: ls /etc/cni/net.d/ and identify the name of the plugin.
+
+5. What binary executable file will be run by kubelet after a container and its associated namespace are created?
+Look at the type field in file /etc/cni/net.d/10-flannel.conflist. 

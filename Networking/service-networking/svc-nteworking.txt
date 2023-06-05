@@ -1,0 +1,27 @@
+1. What network range are the nodes in the cluster part of?
+Run the command: ip addr and look at the IP address assigned to the eth0 interfaces. Derive network range from that.
+one way to do this is to make use of the ipcalc utility. If it is not installed, you can install it by running:
+apt update and the apt install ipcalc
+Then use it to determine the network range as shown below:
+First, find the Internal IP of the nodes.
+Next, use the ipcalc tool to see the network detailsn this example, the network is 10.33.39.0/24.
+
+2. What is the range of IP addresses configured for PODs on this cluster?
+The network is configured with weave. Check the weave pods logs using the command kubectl logs <weave-pod-name> weave -n kube-system and look for ipalloc-range.
+
+3. What is the IP Range configured for the services within the cluster?
+Inspect the setting on kube-api server by running on command cat /etc/kubernetes/manifests/kube-apiserver.yaml | grep cluster-ip-range
+
+4. How many kube-proxy pods are deployed in this cluster?
+Run the command: kubectl get pods -n kube-system and look for kube-proxy pods.
+
+5. What type of proxy is the kube-proxy configured to use?
+Check the logs of the kube-proxy pods. Run the command: kubectl logs <kube-proxy-pod-name> -n kube-system
+
+6. How does this Kubernetes cluster ensure that a kube-proxy pod runs on all nodes in the cluster?
+Inspect the kube-proxy pods and try to identify how they are deployed.
+Run the command: kubectl get ds -n kube-system
+NOte: n a typical Kubernetes cluster, the kube-proxy component is responsible for network proxying and load balancing. It ensures that network traffic is correctly routed to the appropriate pods based on the defined service rules.
+
+To ensure that a kube-proxy pod runs on all nodes in the cluster, Kubernetes utilizes a DaemonSet. A DaemonSet is a controller that ensures a copy of a specific pod, in this case, the kube-proxy pod, runs on each node in the cluster.
+
