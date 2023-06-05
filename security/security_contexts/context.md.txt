@@ -1,0 +1,36 @@
+1. What is the user used to execute the sleep process within the ubuntu-sleeper pod?  
+Run the command: `kubectl exec ubuntu-sleeper -- whoami` and check the user that is running the container.  
+
+2. Edit the pod ubuntu-sleeper to run the sleep process with user ID 1010.  
+To delete the existing ubuntu-sleeper pod:  
+`kubectl delete po ubuntu-sleeper`  
+After that apply solution manifest file to run as user 1010  
+Then run the command kubectl apply -f <file-name>.yaml to create a resource.  
+NOTE: TO delete the pod faster, you can run kubectl delete pod ubuntu-sleeper --force. This can be done for any pod in the lab or the actual exam. It is not recommended to run this in Production, so keep a note of that.  
+
+3. A Pod definition file named multi-pod.yaml is given. With what user are the processes in the web container started?
+The pod is created with multiple containers and security contexts defined at the Pod and Container level.  
+The User ID defined in the securityContext of the container overrides the User ID in the POD  
+
+4. With what user are the processes in the sidecar container started?
+
+
+The pod is created with multiple containers and security contexts defined at the Pod and Container level.  
+
+The User ID defined in the securityContext of the POD is carried over to all the containers in the Pod.  
+
+5. Update pod ubuntu-sleeper to run as Root user and with the SYS_TIME capability.
+Note: Only make the necessary changes. Do not modify the name of the pod.  
+
+Add SYS_TIME capability to the container's Security Context.  
+Update yaml  
+then run the command kubectl apply -f <file-name>.yaml to create a pod from given definition file.  
+
+6. update the pod to also make use of the NET_ADMIN capability.
+Note: Only make the necessary changes. Do not modify the name of the pod.  
+Add NET_ADMIN capability to the container's Security Context.  
+create yaml amd create
+
+ 
+
+  
